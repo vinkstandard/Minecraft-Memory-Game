@@ -1,16 +1,25 @@
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
+import javafx.scene.control.Alert;
+import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
+import javafx.scene.image.*;
+import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.List;
+
+
 
 public class ControllerGioco {
     private GridPane gridPrincipale = new GridPane();
     private Carta primaCarta = null;
     private Carta secondaCarta = null;
+    private List<Carta> listaCarte = new ArrayList<>();
+    private int numeroTentativi;
 
 
     public ControllerGioco() {
@@ -34,12 +43,23 @@ public class ControllerGioco {
                 Carta carta = new Carta(valore);
                 carta.setOnMouseClicked(e -> gestistiClick(carta));
                 gridPrincipale.add(carta, riga, colonna);
+                listaCarte.add(carta);
             }
         }
     }
 
     public StackPane getView() {
-        return new StackPane(gridPrincipale);
+//        return new StackPane(gridPrincipale);
+        ImageView immagineBackGround = new ImageView();
+        immagineBackGround.setImage(new Image(getClass().getResource("/images/sfondo.png").toExternalForm()));
+        immagineBackGround.setFitWidth(1920); // o imposta in base alla finestra
+        immagineBackGround.setFitHeight(1080);
+        immagineBackGround.setPreserveRatio(false);
+
+        StackPane root = new StackPane();
+        root.getChildren().addAll(immagineBackGround, gridPrincipale);
+        return root;
+
     }
 
     private void gestistiClick(Carta cliccata) {
@@ -57,8 +77,11 @@ public class ControllerGioco {
             if (primaCarta.getValore() == secondaCarta.getValore()) {
                 primaCarta.setAbbinata(true);
                 secondaCarta.setAbbinata(true);
-                resettaTurno();
                 gestoreSuoni.playSuonoCorretto();
+                numeroTentativi++;
+                resettaTurno();
+                controllaVittora();
+
 
             } else {
                 gestoreSuoni.playSuonoSbagliato();
@@ -66,6 +89,7 @@ public class ControllerGioco {
                 pausa.setOnFinished(e -> {
                     primaCarta.copriCarta();
                     secondaCarta.copriCarta();
+                    numeroTentativi++;
                     resettaTurno();
                 });
                 pausa.play();
@@ -77,5 +101,22 @@ public class ControllerGioco {
         primaCarta = null;
         secondaCarta = null;
         gridPrincipale.setDisable(false);
+    }
+    private void controllaVittora(){
+
+        for(Carta carta : listaCarte){
+            if(!carta.isAbbinata()){
+                return;
+            }
+        }
+
+        // altrimenti abbiamo vinto
+
+        Alert allerta = new Alert(Alert.AlertType.INFORMATION);
+        allerta.setTitle("Hai vinto!");
+        allerta.setHeaderText(null);
+        allerta.setContentText("Ci sei riuscito in " + numeroTentativi +  " tentativi");
+        allerta.showAndWait();
+        // TODO: aggiungi victory soundsss
     }
 }
