@@ -1,18 +1,16 @@
 import javafx.animation.PauseTransition;
 import javafx.geometry.Insets;
+import javafx.geometry.Pos;
 import javafx.scene.control.Alert;
 import javafx.scene.image.Image;
 import javafx.scene.layout.GridPane;
 import javafx.scene.layout.StackPane;
 import javafx.util.Duration;
 import javafx.scene.image.*;
-import javafx.scene.image.Image;
 
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
-
-
 
 public class ControllerGioco {
     private GridPane gridPrincipale = new GridPane();
@@ -21,16 +19,19 @@ public class ControllerGioco {
     private List<Carta> listaCarte = new ArrayList<>();
     private int numeroTentativi;
 
-
     public ControllerGioco() {
 
+        // TODO:
+        //  Selezione difficoltà{x caselle e y tentativi max}
+        //  Aggiungere suono vittoria nel metodo controllaVittoria()
 
         gridPrincipale.setPadding(new Insets(10));
         gridPrincipale.setHgap(10);
         gridPrincipale.setVgap(10);
+        gridPrincipale.setAlignment(Pos.CENTER);
 
         ArrayList<Integer> valori = new ArrayList<>();
-        for (int i = 1; i <= 8; i++) {
+        for (int i = 1; i <= 8; i++) { // per ora solo 8 immagini, basterà modificare le condizioni di loop
             valori.add(i);
             valori.add(i); // da modificare dopo
         }
@@ -49,17 +50,16 @@ public class ControllerGioco {
     }
 
     public StackPane getView() {
-//        return new StackPane(gridPrincipale);
+
         ImageView immagineBackGround = new ImageView();
         immagineBackGround.setImage(new Image(getClass().getResource("/images/sfondo.png").toExternalForm()));
-        immagineBackGround.setFitWidth(1920); // o imposta in base alla finestra
+        immagineBackGround.setFitWidth(1920);
         immagineBackGround.setFitHeight(1080);
         immagineBackGround.setPreserveRatio(false);
 
         StackPane root = new StackPane();
         root.getChildren().addAll(immagineBackGround, gridPrincipale);
         return root;
-
     }
 
     private void gestistiClick(Carta cliccata) {
@@ -102,21 +102,18 @@ public class ControllerGioco {
         secondaCarta = null;
         gridPrincipale.setDisable(false);
     }
-    private void controllaVittora(){
 
-        for(Carta carta : listaCarte){
-            if(!carta.isAbbinata()){
+    private void controllaVittora() {
+        for (Carta carta : listaCarte) {
+            if (!carta.isAbbinata()) {
                 return;
             }
         }
-
         // altrimenti abbiamo vinto
-
         Alert allerta = new Alert(Alert.AlertType.INFORMATION);
         allerta.setTitle("Hai vinto!");
         allerta.setHeaderText(null);
-        allerta.setContentText("Ci sei riuscito in " + numeroTentativi +  " tentativi");
+        allerta.setContentText("Ci sei riuscito in " + numeroTentativi + " tentativi");
         allerta.showAndWait();
-        // TODO: aggiungi victory soundsss
     }
 }
