@@ -1,31 +1,28 @@
 import javafx.scene.layout.StackPane;
-import javafx.scene.paint.Color;
-import javafx.scene.shape.Rectangle;
 
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
-
-
 
 public class Carta extends StackPane {
 
     private int valore;
     private boolean scoperta = false;
     private boolean abbinata = false;
-    private Rectangle bordo = new Rectangle(180, 200);
-    private ImageView immagine;
+    private ImageView immagineDaVisualizzare;
+    private final Image retroCarta = new Image(getClass().getResource("/images/chest.png").toExternalForm());
+    private final Image immagineFronte;
 
     public Carta(int valore) {
         this.valore = valore;
-        bordo.setFill(Color.LIGHTGRAY);
-        bordo.setStroke(Color.DARKGREY);
+        this.immagineFronte = new Image(getClass().getResource("/images/" + valore + ".png").toExternalForm());
 
-        immagine = new ImageView();
-        immagine.setFitHeight(160);
-        immagine.setFitWidth(160);
+        immagineDaVisualizzare = new ImageView(retroCarta);
+        immagineDaVisualizzare.setFitWidth(100);
+        immagineDaVisualizzare.setFitHeight(100);
+        immagineDaVisualizzare.fitWidthProperty().bind(this.widthProperty());
+        immagineDaVisualizzare.fitWidthProperty().bind(this.heightProperty());
 
-        getChildren().addAll(bordo, immagine);
-
+        getChildren().add(immagineDaVisualizzare);
     }
 
     public int getValore() {
@@ -42,23 +39,20 @@ public class Carta extends StackPane {
 
     public void scopriCarta() {
         if (!abbinata) {
-            Image image = new Image(getClass().getResourceAsStream("/images/" + valore + ".png"));
-            immagine.setImage(image);
-            immagine.setVisible(true);
+            immagineDaVisualizzare.setImage(immagineFronte);
             scoperta = true;
         }
     }
 
     public void copriCarta() {
         if (!abbinata) {
-            immagine.setVisible(false);
+            immagineDaVisualizzare.setImage(retroCarta);
             scoperta = false;
         }
     }
 
     public void setAbbinata(boolean abbinata) {
         this.abbinata = abbinata;
-        bordo.setFill(Color.LIGHTGREEN);
+        // puoi aggiungere un effetto visivo se vuoi
     }
-
 }
