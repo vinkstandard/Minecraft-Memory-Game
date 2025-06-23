@@ -50,12 +50,15 @@ public class ControllerGioco {
             primaCarta = cliccata;
         } else {
             secondaCarta = cliccata;
+            // stoppare i click dopo che l'utente ha cliccato su due carte
+            gridPrincipale.setDisable(true);
+
             if (primaCarta.getValore() == secondaCarta.getValore()) {
                 primaCarta.setAbbinata(true);
                 secondaCarta.setAbbinata(true);
                 resettaTurno();
             } else {
-                PauseTransition pausa = new PauseTransition(Duration.seconds(1));
+                PauseTransition pausa = new PauseTransition(Duration.seconds(0.5));
                 pausa.setOnFinished(e -> {
                     primaCarta.copriCarta();
                     secondaCarta.copriCarta();
@@ -69,5 +72,6 @@ public class ControllerGioco {
     private void resettaTurno() {
         primaCarta = null;
         secondaCarta = null;
+        gridPrincipale.setDisable(false);
     }
 }
