@@ -24,6 +24,7 @@ public class ControllerGioco {
         // TODO:
         //  Selezione difficoltà{x caselle e y tentativi max}
         //  Aggiungere suono vittoria nel metodo controllaVittoria()
+        //  Far sparire le caselle in caso di match corretto
 
         gridPrincipale.setPadding(new Insets(10));
         gridPrincipale.setHgap(10);
