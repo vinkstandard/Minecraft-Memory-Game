@@ -44,6 +44,7 @@ public class ControllerGioco {
 
     private void gestistiClick(Carta cliccata) {
         if (cliccata.isScoperta() || cliccata.isAbbinata()) return;
+        GestoreSuoni gestoreSuoni = new GestoreSuoni();
 
         cliccata.scopriCarta();
         if (primaCarta == null) {
@@ -57,7 +58,10 @@ public class ControllerGioco {
                 primaCarta.setAbbinata(true);
                 secondaCarta.setAbbinata(true);
                 resettaTurno();
+                gestoreSuoni.playSuonoCorretto();
+
             } else {
+                gestoreSuoni.playSuonoSbagliato();
                 PauseTransition pausa = new PauseTransition(Duration.seconds(0.5));
                 pausa.setOnFinished(e -> {
                     primaCarta.copriCarta();
