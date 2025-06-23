@@ -7,7 +7,7 @@ public class Main extends Application {
     @Override
     public void start(Stage stagePrimario) {
         ControllerGioco controller = new ControllerGioco();
-        Scene scene = new Scene(controller.getView(), 600, 600);
+        Scene scene = new Scene(controller.getView(), 1600, 800);
         stagePrimario.setScene(scene);
         stagePrimario.setTitle("Minecraft Memory Game");
         stagePrimario.show();
