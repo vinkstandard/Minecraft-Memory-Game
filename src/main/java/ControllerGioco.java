@@ -53,7 +53,7 @@ public class ControllerGioco {
     public StackPane getView() {
 
         ImageView immagineBackGround = new ImageView();
-        immagineBackGround.setImage(new Image(getClass().getResource("/images/sfondo.png").toExternalForm()));
+        immagineBackGround.setImage(new Image(getClass().getResource("/images/terra.png").toExternalForm()));
         immagineBackGround.setFitWidth(1920);
         immagineBackGround.setFitHeight(1080);
         immagineBackGround.setPreserveRatio(false);
