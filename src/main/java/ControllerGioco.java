@@ -110,6 +110,8 @@ public class ControllerGioco {
                 return;
             }
         }
+        GestoreSuoni gestoreSuoni = new GestoreSuoni();
+        gestoreSuoni.playSuonoVittoria();
         // altrimenti abbiamo vinto
         Alert allerta = new Alert(Alert.AlertType.INFORMATION);
         allerta.setTitle("Hai vinto!");
