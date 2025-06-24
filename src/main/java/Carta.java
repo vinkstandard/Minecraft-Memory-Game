@@ -2,27 +2,47 @@ import javafx.scene.layout.StackPane;
 
 import javafx.scene.image.*;
 import javafx.scene.image.Image;
+import javafx.scene.paint.Color;
+import javafx.scene.shape.Rectangle;
 
 public class Carta extends StackPane {
 
     private int valore;
     private boolean scoperta = false;
     private boolean abbinata = false;
-    private ImageView immagineDaVisualizzare;
-    private final Image retroCarta = new Image(getClass().getResource("/images/chest.png").toExternalForm());
+
+    private ImageView iconaCentrale;
+    private ImageView immagineFronteView;
+    private Rectangle bordo;
+
     private final Image immagineFronte;
+    private final Image immagineRetroIcona = new Image(getClass().getResource("/images/chest.png").toExternalForm());
+    private final Image retroTexture = new Image(getClass().getResource("/images/stone1.jpeg").toExternalForm());
 
     public Carta(int valore) {
         this.valore = valore;
         this.immagineFronte = new Image(getClass().getResource("/images/" + valore + ".png").toExternalForm());
 
-        immagineDaVisualizzare = new ImageView(retroCarta);
-        immagineDaVisualizzare.setFitWidth(100);
-        immagineDaVisualizzare.setFitHeight(100);
-        immagineDaVisualizzare.fitWidthProperty().bind(this.widthProperty());
-        immagineDaVisualizzare.fitWidthProperty().bind(this.heightProperty());
+        // bordo carta
+        bordo = new Rectangle(200, 200);
+        bordo.setArcWidth(20);
+        bordo.setArcHeight(20);
+        bordo.setFill(new javafx.scene.paint.ImagePattern(retroTexture));
+        bordo.setStroke(Color.DARKGOLDENROD);
+        bordo.setStrokeWidth(2);
 
-        getChildren().add(immagineDaVisualizzare);
+        // icona al centro del back della carta
+        iconaCentrale = new ImageView(immagineRetroIcona);
+        iconaCentrale.setFitWidth(150);
+        iconaCentrale.setFitHeight(150);
+
+        // l'immagine della carta, ovviamente nascosta finchè non è scoperta
+        immagineFronteView = new ImageView(immagineFronte);
+        immagineFronteView.setFitWidth(150);
+        immagineFronteView.setFitHeight(150);
+        immagineFronteView.setVisible(false);
+
+        getChildren().addAll(bordo, iconaCentrale, immagineFronteView);
     }
 
     public int getValore() {
@@ -39,20 +59,22 @@ public class Carta extends StackPane {
 
     public void scopriCarta() {
         if (!abbinata) {
-            immagineDaVisualizzare.setImage(immagineFronte);
+            immagineFronteView.setVisible(true);
+            iconaCentrale.setVisible(false);
             scoperta = true;
         }
     }
 
     public void copriCarta() {
         if (!abbinata) {
-            immagineDaVisualizzare.setImage(retroCarta);
+            immagineFronteView.setVisible(false);
+            iconaCentrale.setVisible(true);
             scoperta = false;
         }
     }
 
     public void setAbbinata(boolean abbinata) {
         this.abbinata = abbinata;
-        // puoi aggiungere un effetto visivo se vuoi
+        bordo.setStroke(Color.LIGHTGREEN); // colore in caso di abbinamento
     }
 }
